@@ -1,7 +1,5 @@
 package com.sky.result;
 
-import com.sky.entity.Employee;
-import com.sky.vo.EmployeeLoginVO;
 import lombok.Data;
 
 import java.io.Serializable;
