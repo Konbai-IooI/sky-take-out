@@ -90,6 +90,7 @@ public class EmployeeController {
         Employee employee = employeeService.getByUserid(id);
         return Result.success(employee);
     }
+
     /**
      * 员工分页查询
      */
