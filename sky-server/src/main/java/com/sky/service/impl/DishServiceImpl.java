@@ -55,7 +55,7 @@ public class DishServiceImpl implements DishService {
         // 获取insert生成的主键值
         Long dishId = dish.getId();
         List<DishFlavor> flavors = dishDTO.getFlavors();
-        if (flavors != null && flavors.size() > 0) {
+        if (flavors != null && !flavors.isEmpty()) {
             for (DishFlavor flavor : flavors) {
                 flavor.setDishId(dishId);
             }
@@ -72,6 +72,10 @@ public class DishServiceImpl implements DishService {
         return new PageResult(page.getTotal(), page.getResult());
     }
 
+    /**
+     * 批量删除
+     * @param ids
+     */
     @Transactional
     public void deleteBatch(List<Long> ids) {
 
@@ -90,11 +94,49 @@ public class DishServiceImpl implements DishService {
             throw new DeletionNotAllowedException(MessageConstant.DISH_BE_RELATED_BY_SETMEAL);
         }
         // 删除菜品表中的数据
-        for (Long id : ids) {
-            dishMapper.deleteById(id);
+            dishMapper.deleteByIds(ids);
             // 删除菜品关联的口味
-            dishFlavorMapper.deleteByDishId(id);
-        }
+            dishFlavorMapper.deleteByDishIds(ids);
 
+    }
+
+
+    /**
+     * 根据id查询和对应的口味
+     * @param dishId
+     * @return
+     */
+    public DishVO getByIdWithFlavor(Long dishId) {
+        Dish dish = dishMapper.getById(dishId);
+        List<DishFlavor> dishFlavors = dishFlavorMapper.getByDishId(dishId);
+
+        DishVO dishVO = new DishVO();
+        BeanUtils.copyProperties(dish,dishVO);
+        dishVO.setFlavors(dishFlavors);
+        return dishVO;
+    }
+
+    /**
+     * 根据id修改对应信息
+     * @param dishDTO
+     */
+    @Transactional
+    public void updateWithFlavor(DishDTO dishDTO) {
+        Dish dish = new Dish();
+        BeanUtils.copyProperties(dishDTO,dish);
+        //修改菜品
+        dishMapper.update(dish);
+
+        //修改口味
+        dishFlavorMapper.deleteByDishId(dish.getId());
+
+        List<DishFlavor> flavors = dishDTO.getFlavors();
+        if (flavors != null && !flavors.isEmpty()) {
+            for (DishFlavor flavor : flavors) {
+                flavor.setDishId(dishDTO.getId());
+            }
+            // 向口味表Flavor插入n条数据
+            dishFlavorMapper.insertBatch(flavors);
+        }
     }
 }
