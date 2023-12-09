@@ -61,4 +61,20 @@ public class DishController {
         return Result.success();
     }
 
+    @PostMapping("/status/{status}")
+    public Result status(@PathVariable Integer status, Long id) {
+
+        Dish dish = new Dish().builder().status(status).id(id).build();
+        dishService.update(dish);
+        return Result.success();
+    }
+
+    @GetMapping("/list")
+    public Result<List<Dish>> list(String categoryId) {
+
+        List<Dish> dishs = dishService.list(categoryId);
+
+        return Result.success(dishs);
+    }
+
 }
