@@ -1,5 +1,6 @@
 package com.sky.config;
 
+import com.sky.constant.FileAddressConstant;
 import com.sky.interceptor.JwtTokenAdminInterceptor;
 import com.sky.json.JacksonObjectMapper;
 import lombok.extern.slf4j.Slf4j;
@@ -33,6 +34,7 @@ public class WebMvcConfiguration extends WebMvcConfigurationSupport {
 
     /**
      * 注册自定义拦截器
+     *
      * @param registry
      */
     protected void addInterceptors(InterceptorRegistry registry) {
@@ -54,13 +56,13 @@ public class WebMvcConfiguration extends WebMvcConfigurationSupport {
         converter.setObjectMapper(new JacksonObjectMapper());
 
         // 加入容器
-        converters.add(0,converter);
+        converters.add(0, converter);
     }
 
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/uploads/**")
-                .addResourceLocations("file:D:/Project/FIle/"); // 设置文件存储的目录
+                .addResourceLocations(FileAddressConstant.SET_MVC_FILE_ADDRESS); // 设置文件存储的目录
     }
 }

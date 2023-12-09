@@ -1,5 +1,6 @@
 package com.sky.controller.admin;
 
+import com.sky.constant.MessageConstant;
 import com.sky.result.Result;
 import com.sky.utils.LocalFileUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -24,21 +25,21 @@ public class CommonController {
     @PostMapping("/upload")
     public Result<String> upload(MultipartFile file) {
         log.info("文件上传:{}", file);
-            try {
-                String originalFilename = file.getOriginalFilename();// 原始文件名
+        try {
+            String originalFilename = file.getOriginalFilename();// 原始文件名
 
-                String extension = originalFilename.substring(originalFilename.lastIndexOf("."));//获得后缀
+            String extension = originalFilename.substring(originalFilename.lastIndexOf("."));// 获得后缀
 
-                String fileName = UUID.randomUUID().toString() + extension;//UUID
+            String fileName = UUID.randomUUID().toString() + extension;// UUID
 
-                LocalFileUtil.upload(file.getBytes(), fileName);//保存到本地
+            LocalFileUtil.upload(file.getBytes(), fileName);// 保存到本地
 
-                String filePath = "http://localhost:8080/uploads/" + fileName;
+            String filePath = "http://localhost:8080/uploads/" + fileName;
 
-                return Result.success(filePath);
-            } catch (IOException e) {
-                log.error("文件上传失败:", e);
-            }
-            return null;
+            return Result.success(filePath);
+        } catch (IOException e) {
+            log.error("文件上传失败:", e);
+        }
+        return Result.error(MessageConstant.UPLOAD_FAILED);
     }
 }

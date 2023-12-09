@@ -1,5 +1,6 @@
 package com.sky.utils;
 
+import com.sky.constant.FileAddressConstant;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
@@ -13,8 +14,6 @@ import java.io.IOException;
 @AllArgsConstructor
 public class LocalFileUtil {
 
-    private static String localFilePath = "D:\\Project\\FIle";
-
     /**
      * 文件保存到本地
      *
@@ -23,10 +22,13 @@ public class LocalFileUtil {
      * @return
      */
     public static String upload(byte[] bytes, String objectName) {
-        try (FileOutputStream fos = new FileOutputStream(localFilePath + "\\" + objectName)) {
+
+        String localFilePath = FileAddressConstant.SET_FILE_ADDRESS + objectName;
+
+        try (FileOutputStream fos = new FileOutputStream(localFilePath)) {
             fos.write(bytes);
-            log.info("文件保存到本地路径: {}", localFilePath + "\\" + objectName);
-            return localFilePath + "\\" + objectName;
+            log.info("文件保存到本地路径: {}", localFilePath);
+            return localFilePath;
         } catch (IOException e) {
             log.error("保存文件到本地失败: {}", e.getMessage());
             return null;
