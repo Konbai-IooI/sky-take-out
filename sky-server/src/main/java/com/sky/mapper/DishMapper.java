@@ -70,4 +70,6 @@ public interface DishMapper {
     List<Dish> list(String categoryId);
 
 
+    @Select("select a.* from dish a left join setmeal_dish b on a.id = b.dish_id where b.setmeal_id")
+    List<Dish> getBySetmealId(Long id);
 }
