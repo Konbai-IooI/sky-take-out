@@ -48,5 +48,5 @@ public interface DishService {
 
     void update(Dish dish);
 
-    List<Dish> list(String categoryId);
+    List<Dish> list(Long categoryId);
 }

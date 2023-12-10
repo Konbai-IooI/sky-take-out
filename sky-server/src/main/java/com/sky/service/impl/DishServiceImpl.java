@@ -145,14 +145,17 @@ public class DishServiceImpl implements DishService {
 
     /**
      * 更新
+     *
      * @param dish
      */
     public void update(Dish dish) {
         dishMapper.update(dish);
     }
 
-    @Override
-    public List<Dish> list(String categoryId) {
-        return (dishMapper.list(categoryId));
+    public List<Dish> list(Long categoryId) {
+
+        Dish dish = Dish.builder().categoryId(categoryId).status(StatusConstant.ENABLE).build();
+
+        return (dishMapper.list(dish));
     }
 }

@@ -70,7 +70,7 @@ public class DishController {
     }
 
     @GetMapping("/list")
-    public Result<List<Dish>> list(String categoryId) {
+    public Result<List<Dish>> list(Long categoryId) {
 
         List<Dish> dishs = dishService.list(categoryId);
 
